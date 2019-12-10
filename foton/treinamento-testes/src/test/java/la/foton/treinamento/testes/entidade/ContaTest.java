@@ -11,27 +11,31 @@ import la.foton.treinamento.testes.comum.excecao.NegocioException;
 
 public class ContaTest {
 
-	private Conta conta;
+	private Conta contaCorrente;
+	private Conta contaPoupanca;
 
 	@Before
 	public void setUp() {
-		conta = new ContaCorrente();
-		conta.credita(10.0);
+		contaCorrente = new ContaCorrente();
+		contaCorrente.credita(10.0);
+		
+		contaPoupanca = new ContaPoupanca();
+		contaPoupanca.credita(10.0);
 	}
 
 	@Test
 	public void deveCreditarUmValorNaConta() {
-		conta.credita(19.0);
+		contaCorrente.credita(19.0);
 
-		assertEquals(29.0, conta.getSaldo(), 0.0);
+		assertEquals(29.0, contaCorrente.getSaldo(), 0.0);
 	}
 
 	@Test
 	public void deveDebitarUmValorNaContaQuePossuiSaldoSuficiente() {
 		try {
-			conta.debita(9.9);
+			contaCorrente.debita(9.9);
 
-			assertEquals(0.1, conta.getSaldo(), 0.01);
+			assertEquals(0.1, contaCorrente.getSaldo(), 0.01);
 		} catch (NegocioException e) {
 			fail();
 		}
@@ -40,7 +44,7 @@ public class ContaTest {
 	@Test
 	public void naoDeveDebitarValorEmContaQueNaoPossuiSaldoSuficiente() {
 		try {
-			conta.debita(10.1);
+			contaCorrente.debita(10.1);
 
 			fail();
 		} catch (NegocioException e) {
@@ -54,13 +58,24 @@ public class ContaTest {
 		contaOrigem.credita(10.00);
 
 		try {
-			contaOrigem.transfere(9.99, conta);
+			contaOrigem.transfere(9.99, contaCorrente);
 
 			assertEquals(0.01, contaOrigem.getSaldo(), 0.001);
-			assertEquals(19.99, conta.getSaldo(), 0.001);
+			assertEquals(19.99, contaCorrente.getSaldo(), 0.001);
 		} catch (NegocioException e) {
 			fail(e.getMensagem().getTexto());
 		}
+	}
+	@Test
+	public void naoDeveDebitar() {
+		try {
+			contaPoupanca.debita(100.0);
+			fail();
+		} catch (NegocioException e) {
+			assertEquals(Mensagem.SALDO_INSUFICIENTE,e.getMensagem());
+		}
+		
+		
 	}
 
 }
