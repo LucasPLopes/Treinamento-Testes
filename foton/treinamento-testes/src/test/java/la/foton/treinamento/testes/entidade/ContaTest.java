@@ -85,5 +85,27 @@ public class ContaTest {
 			assertEquals(Mensagem.CONTA_NAO_PODE_SER_ENCERRADA, e.getMensagem());
 		}
 	}
-
+	@Test
+	public void zerarEEncerrarConta() {
+		try {
+			contaCorrente.debita(contaCorrente.getSaldo());
+			contaCorrente.encerra();
+			assertEquals(EstadoDaConta.ENCERRADA, contaCorrente.getEstado());
+		} catch (NegocioException e) {
+			fail();
+		}
+	}
+	@Test
+	public void encerrarContaJaZerada() {
+		try {
+			contaCorrente.debita(contaCorrente.getSaldo());
+			contaCorrente.encerra();
+			contaCorrente.encerra();
+			fail();
+		} catch (NegocioException e) {
+			// TODO Auto-generated catch block
+			assertEquals(Mensagem.CONTA_JA_ENCERRADA, e.getMensagem());
+		}
+		
+	}
 }
