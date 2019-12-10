@@ -15,6 +15,10 @@ public abstract class Conta {
 
 	private EstadoDaConta estado;
 
+	public EstadoDaConta getEstado() {
+		return estado;
+	}
+
 	protected TipoDaConta tipo;
 
 	public Conta() {
@@ -46,7 +50,7 @@ public abstract class Conta {
 		encerrada();
 	}
 
-	public void encerrada() {
+	private void encerrada() {
 		this.estado = EstadoDaConta.ENCERRADA;
 	}
 
