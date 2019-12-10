@@ -74,8 +74,16 @@ public class ContaTest {
 		} catch (NegocioException e) {
 			assertEquals(Mensagem.SALDO_INSUFICIENTE,e.getMensagem());
 		}
-		
-		
+	}
+	@Test
+	public void tentarEncerrarCSaldo() {
+		try {
+			contaCorrente.encerra();
+			fail();
+		} catch (NegocioException e) {
+			// TODO Auto-generated catch block
+			assertEquals(Mensagem.CONTA_NAO_PODE_SER_ENCERRADA, e.getMensagem());
+		}
 	}
 
 }
